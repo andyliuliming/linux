@@ -229,7 +229,7 @@ static void kvp_update_mem_state(int pool)
 
 	fclose(filep);
 
-	syslog(LOG_WARNING, "#KVP inner kvp_update_mem_state try to release filelock %d.", pool);
+	syslog(LOG_WARNING, "#KVP inner kvp_update_mem_state try to release filelock %d. num_blocks: %d, num_records: %d", pool, num_blocks, num_records);
 	kvp_release_lock(pool);
 	syslog(LOG_WARNING, "#KVP inner kvp_update_mem_state released filelock %d.", pool);
 }
@@ -410,7 +410,7 @@ static int kvp_pool_enumerate(int pool, int index, __u8 *key, int key_size,
 	record = kvp_file_info[pool].records;
 
 	if (index >= kvp_file_info[pool].num_records) {
-		syslog(LOG_WARNING, "#KVP inner kvp_pool_enumerate %d.", index);
+		syslog(LOG_WARNING, "#KVP inner kvp_pool_enumerate %d, num_records: %d.", index, kvp_file_info[pool].num_records);
 		return 1;
 	}
 
