@@ -174,7 +174,7 @@ static void kvp_update_file(int pool)
 
 static void kvp_update_mem_state(int pool)
 {
-	syslog(LOG_WARNING, "#KVP inner kvp_update_mem_state %d.", pool)
+	syslog(LOG_WARNING, "#KVP inner kvp_update_mem_state %d.", pool);
 	FILE *filep;
 	size_t records_read = 0;
 	struct kvp_record *record = kvp_file_info[pool].records;
@@ -184,7 +184,7 @@ static void kvp_update_mem_state(int pool)
 
 	kvp_acquire_lock(pool);
 
-	syslog(LOG_WARNING, "#KVP inner kvp_update_mem_state acquired lock %d.", pool)
+	syslog(LOG_WARNING, "#KVP inner kvp_update_mem_state acquired lock %d.", pool);
 	filep = fopen(kvp_file_info[pool].fname, "re");
 	if (!filep) {
 		syslog(LOG_ERR, "Failed to open file, pool: %d; error: %d %s", pool,
@@ -229,9 +229,9 @@ static void kvp_update_mem_state(int pool)
 
 	fclose(filep);
 
-	syslog(LOG_WARNING, "#KVP inner kvp_update_mem_state try to release filelock %d.", pool)
+	syslog(LOG_WARNING, "#KVP inner kvp_update_mem_state try to release filelock %d.", pool);
 	kvp_release_lock(pool);
-	syslog(LOG_WARNING, "#KVP inner kvp_update_mem_state released filelock %d.", pool)
+	syslog(LOG_WARNING, "#KVP inner kvp_update_mem_state released filelock %d.", pool);
 }
 
 static int kvp_file_init(void)
