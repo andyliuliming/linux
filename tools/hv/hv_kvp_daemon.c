@@ -410,7 +410,7 @@ static int kvp_pool_enumerate(int pool, int index, __u8 *key, int key_size,
 	record = kvp_file_info[pool].records;
 
 	if (index >= kvp_file_info[pool].num_records) {
-		syslog(LOG_WARNING, "#KVP inner kvp_pool_enumerate %d.", index)
+		syslog(LOG_WARNING, "#KVP inner kvp_pool_enumerate %d.", index);
 		return 1;
 	}
 
