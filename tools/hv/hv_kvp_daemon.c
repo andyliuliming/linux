@@ -229,7 +229,7 @@ static void kvp_update_mem_state(int pool)
 
 	fclose(filep);
 
-	syslog(LOG_WARNING, "#KVP inner kvp_update_mem_state try to release filelock %d. num_blocks: %d, num_records: %d", pool, num_blocks, num_records);
+	syslog(LOG_WARNING, "#KVP inner kvp_update_mem_state try to release filelock %d. num_blocks: %d, records_read: %d", pool, num_blocks, records_read);
 	kvp_release_lock(pool);
 	syslog(LOG_WARNING, "#KVP inner kvp_update_mem_state released filelock %d.", pool);
 }
