@@ -1580,7 +1580,7 @@ int main(int argc, char *argv[])
 					HV_KVP_EXCHANGE_MAX_KEY_SIZE,
 					hv_msg->body.kvp_enum_data.data.value,
 					HV_KVP_EXCHANGE_MAX_VALUE_SIZE)) {
-					syslog(LOG_WARNING, "#KVP kvp_pool_enumerate failed .");
+					syslog(LOG_WARNING, "#KVP kvp_pool_enumerate failed p:%d index: %d.", pool, hv_msg->body.kvp_enum_data.index);
 					hv_msg->error = HV_S_CONT;
 					}
 			goto kvp_done;
@@ -1589,7 +1589,7 @@ int main(int argc, char *argv[])
 		// now op is KVP_OP_ENUMERATE and pool == KVP_POOL_AUTO
 		key_name = (char *)hv_msg->body.kvp_enum_data.data.key;
 		key_value = (char *)hv_msg->body.kvp_enum_data.data.value;
-		syslog(LOG_WARNING, "#KVP kvp_enum_data.index %d.", hv_msg->body.kvp_enum_data.index);
+		syslog(LOG_WARNING, "#KVP pool: %d, kvp_enum_data.index %d.", pool, hv_msg->body.kvp_enum_data.index);
 		switch (hv_msg->body.kvp_enum_data.index) {
 		case FullyQualifiedDomainName:
 			strcpy(key_value, full_domain_name);
