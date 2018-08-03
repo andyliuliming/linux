@@ -175,7 +175,7 @@ static void kvp_update_file(int pool)
 
 static void kvp_update_mem_state(int pool)
 {
-	syslog(LOG_WARNING, "#KVP inner kvp_update_mem_state %d.", pool);
+	//syslog(LOG_WARNING, "#KVP inner kvp_update_mem_state %d.", pool);
 	FILE *filep;
 	size_t records_read = 0;
 	struct kvp_record *record = kvp_file_info[pool].records;
@@ -185,7 +185,7 @@ static void kvp_update_mem_state(int pool)
 
 	kvp_acquire_lock(pool);
 
-	syslog(LOG_WARNING, "#KVP inner kvp_update_mem_state acquired lock %d.", pool);
+	//syslog(LOG_WARNING, "#KVP inner kvp_update_mem_state acquired lock %d.", pool);
 	filep = fopen(kvp_file_info[pool].fname, "re");
 	if (!filep) {
 		syslog(LOG_ERR, "Failed to open file, pool: %d; error: %d %s", pool,
@@ -230,9 +230,9 @@ static void kvp_update_mem_state(int pool)
 
 	fclose(filep);
 
-	syslog(LOG_WARNING, "#KVP inner kvp_update_mem_state try to release filelock %d. num_blocks: %d, records_read: %d", pool, num_blocks, records_read);
+	// //syslog(LOG_WARNING, "#KVP inner kvp_update_mem_state try to release filelock %d. num_blocks: %d, records_read: %d", pool, num_blocks, records_read);
 	kvp_release_lock(pool);
-	syslog(LOG_WARNING, "#KVP inner kvp_update_mem_state released filelock %d.", pool);
+	// //syslog(LOG_WARNING, "#KVP inner kvp_update_mem_state released filelock %d.", pool);
 }
 
 static int kvp_file_init(void)
@@ -411,7 +411,7 @@ static int kvp_pool_enumerate(int pool, int index, __u8 *key, int key_size,
 	record = kvp_file_info[pool].records;
 
 	if (index >= kvp_file_info[pool].num_records) {
-		syslog(LOG_WARNING, "#KVP inner kvp_pool_enumerate %d, num_records: %d.", index, kvp_file_info[pool].num_records);
+		// //syslog(LOG_WARNING, "#KVP inner kvp_pool_enumerate %d, num_records: %d.", index, kvp_file_info[pool].num_records);
 		return 1;
 	}
 
@@ -1412,14 +1412,14 @@ int main(int argc, char *argv[])
 		exit(EXIT_FAILURE);
 	}
 
-	syslog(LOG_WARNING, "#KVP opened the hv_kvp.");
+	//syslog(LOG_WARNING, "#KVP opened the hv_kvp.");
 
 	/*
 	 * Retrieve OS release information.
 	 */
 	kvp_get_os_info();
 
-	syslog(LOG_WARNING, "#KVP got os info.");
+	//syslog(LOG_WARNING, "#KVP got os info.");
 
 	/*
 	 * Cache Fully Qualified Domain Name because getaddrinfo takes an
@@ -1427,14 +1427,14 @@ int main(int argc, char *argv[])
 	 */
 	kvp_get_domain_name(full_domain_name, sizeof(full_domain_name));
 
-	syslog(LOG_WARNING, "#KVP got domain name.");
+	//syslog(LOG_WARNING, "#KVP got domain name.");
 
 	if (kvp_file_init()) {
 		syslog(LOG_ERR, "Failed to initialize the pools");
 		exit(EXIT_FAILURE);
 	}
 
-	syslog(LOG_WARNING, "#KVP file init.");
+	//syslog(LOG_WARNING, "#KVP file init.");
 
 	/*
 	 * Register ourselves with the kernel.
@@ -1448,7 +1448,7 @@ int main(int argc, char *argv[])
 		exit(EXIT_FAILURE);
 	}
 
-	syslog(LOG_WARNING, "#KVP registered.");
+	//syslog(LOG_WARNING, "#KVP registered.");
 	pfd.fd = kvp_fd;
 
 	while (1) {
@@ -1490,7 +1490,7 @@ int main(int argc, char *argv[])
 			 * information.
 			 */
 
-			syslog(LOG_WARNING, "#KVP in_hand_shake op register1.");
+			//syslog(LOG_WARNING, "#KVP in_hand_shake op register1.");
 
 			in_hand_shake = 0;
 			p = (char *)hv_msg->body.kvp_register.version;
@@ -1508,21 +1508,21 @@ int main(int argc, char *argv[])
 		switch (op) {
 		case KVP_OP_GET_IP_INFO:
 
-			syslog(LOG_WARNING, "#KVP get ip info.");
+			//syslog(LOG_WARNING, "#KVP get ip info.");
 
 			kvp_ip_val = &hv_msg->body.kvp_ip_val;
 
 			error =  kvp_mac_to_ip(kvp_ip_val);
 
 			if (error) {
-				syslog(LOG_WARNING, "#KVP get ip kvp_mac_to_ip failed.");
+				//syslog(LOG_WARNING, "#KVP get ip kvp_mac_to_ip failed.");
 				hv_msg->error = error;
 			}	
 			break;
 
 		case KVP_OP_SET_IP_INFO:
 
-			syslog(LOG_WARNING, "#KVP set ip info.");
+			//syslog(LOG_WARNING, "#KVP set ip info.");
 			kvp_ip_val = &hv_msg->body.kvp_ip_val;
 			if_name = kvp_get_if_name(
 					(char *)kvp_ip_val->adapter_id);
@@ -1533,12 +1533,12 @@ int main(int argc, char *argv[])
 				 */
 				hv_msg->error = HV_GUID_NOTFOUND;
 
-				syslog(LOG_WARNING, "#KVP set ip get_if_name failed .");
+				//syslog(LOG_WARNING, "#KVP set ip get_if_name failed .");
 				break;
 			}
 			error = kvp_set_ip_info(if_name, kvp_ip_val);
 			if (error) {
-				syslog(LOG_WARNING, "#KVP set ip kvp_set_ip_info failed .");
+				//syslog(LOG_WARNING, "#KVP set ip kvp_set_ip_info failed .");
 				hv_msg->error = error;
 			}
 			free(if_name);
@@ -1550,7 +1550,7 @@ int main(int argc, char *argv[])
 					hv_msg->body.kvp_set.data.key_size,
 					hv_msg->body.kvp_set.data.value,
 					hv_msg->body.kvp_set.data.value_size)){
-					syslog(LOG_WARNING, "#KVP kvp_op_set kvp_key_add_or_modify failed .");
+					//syslog(LOG_WARNING, "#KVP kvp_op_set kvp_key_add_or_modify failed .");
 					hv_msg->error = HV_S_CONT;
 			}
 			break;
@@ -1562,7 +1562,7 @@ int main(int argc, char *argv[])
 					hv_msg->body.kvp_set.data.value,
 					hv_msg->body.kvp_set.data.value_size)){
 
-					syslog(LOG_WARNING, "#KVP kvp_op_get kvp_get_value failed .");
+					//syslog(LOG_WARNING, "#KVP kvp_op_get kvp_get_value failed .");
 					hv_msg->error = HV_S_CONT;
 					}
 			break;
@@ -1572,7 +1572,7 @@ int main(int argc, char *argv[])
 					hv_msg->body.kvp_delete.key,
 					hv_msg->body.kvp_delete.key_size)){
 
-					syslog(LOG_WARNING, "#KVP kvp_op_delete kvp_key_delete failed .");
+					//syslog(LOG_WARNING, "#KVP kvp_op_delete kvp_key_delete failed .");
 					hv_msg->error = HV_S_CONT;
 					}
 			break;
@@ -1596,7 +1596,7 @@ int main(int argc, char *argv[])
 					HV_KVP_EXCHANGE_MAX_KEY_SIZE,
 					hv_msg->body.kvp_enum_data.data.value,
 					HV_KVP_EXCHANGE_MAX_VALUE_SIZE)) {
-					syslog(LOG_WARNING, "#KVP kvp_pool_enumerate failed p:%d index: %d.", pool, hv_msg->body.kvp_enum_data.index);
+					//syslog(LOG_WARNING, "#KVP kvp_pool_enumerate failed p:%d index: %d.", pool, hv_msg->body.kvp_enum_data.index);
 					hv_msg->error = HV_S_CONT;
 					}
 			goto kvp_done;
@@ -1605,7 +1605,7 @@ int main(int argc, char *argv[])
 		// now op is KVP_OP_ENUMERATE and pool == KVP_POOL_AUTO
 		key_name = (char *)hv_msg->body.kvp_enum_data.data.key;
 		key_value = (char *)hv_msg->body.kvp_enum_data.data.value;
-		syslog(LOG_WARNING, "#KVP pool: %d, kvp_enum_data.index %d.", pool, hv_msg->body.kvp_enum_data.index);
+		//syslog(LOG_WARNING, "#KVP pool: %d, kvp_enum_data.index %d.", pool, hv_msg->body.kvp_enum_data.index);
 		switch (hv_msg->body.kvp_enum_data.index) {
 		case FullyQualifiedDomainName:
 			strcpy(key_value, full_domain_name);
