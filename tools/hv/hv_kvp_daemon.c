@@ -41,6 +41,7 @@
 #include <net/if.h>
 #include <limits.h>
 #include <getopt.h>
+#include <time.h>
 
 /*
  * KVP protocol: The user mode component first registers with the
