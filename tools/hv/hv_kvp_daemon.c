@@ -1395,14 +1395,22 @@ int main(int argc, char *argv[])
 	struct tm * time_info;
 	char timeString[9];  // space for "HH:MM:SS\0"
 
-	time(&current_time);
-	time_info = localtime(&current_time);
-
-	strftime(timeString, sizeof(timeString), "%H:%M:%S", time_info);
+	
 	// puts(timeString);
 
 	openlog("KVP", 0, LOG_USER);
+	
+	time(&current_time);
+	time_info = localtime(&current_time);
+	strftime(timeString, sizeof(timeString), "%H:%M:%S", time_info);
+
 	syslog(LOG_INFO, "KVP starting; pid is:%d at %s.", getpid(), timeString);
+
+	time(&current_time);
+	time_info = localtime(&current_time);
+	strftime(timeString, sizeof(timeString), "%H:%M:%S", time_info);
+
+	syslog(LOG_INFO, "KVP starting 2; pid is:%d at %s.", getpid(), timeString);
 
 	kvp_fd = open("/dev/vmbus/hv_kvp", O_RDWR | O_CLOEXEC);
 
