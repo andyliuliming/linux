@@ -1512,7 +1512,7 @@ int main(int argc, char *argv[])
 			}
 			continue;
 		}
-
+		syslog(LOG_WARNING, "#KVP daemon gotiiii.")
 		syslog(LOG_WARNING, "#KVP daemon got operation: %d.", op);
 		switch (op) {
 		case KVP_OP_GET_IP_INFO:
