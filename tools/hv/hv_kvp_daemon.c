@@ -1512,7 +1512,7 @@ int main(int argc, char *argv[])
 			}
 			continue;
 		}
-		syslog(LOG_WARNING, "#KVP daemon gotiiii %d.", int(op));
+		syslog(LOG_WARNING, "#KVP daemon gotiiii %d.", (int)(op));
 		// syslog(LOG_WARNING, "#KVP daemon got operation: %d.", op);
 		switch (op) {
 		case KVP_OP_GET_IP_INFO:
@@ -1605,7 +1605,7 @@ int main(int argc, char *argv[])
 					HV_KVP_EXCHANGE_MAX_KEY_SIZE,
 					hv_msg->body.kvp_enum_data.data.value,
 					HV_KVP_EXCHANGE_MAX_VALUE_SIZE)) {
-					//syslog(LOG_WARNING, "#KVP kvp_pool_enumerate failed p:%d index: %d.", pool, hv_msg->body.kvp_enum_data.index);
+					syslog(LOG_WARNING, "#KVP kvp_pool_enumerate failed p:%d index: %d.", pool, hv_msg->body.kvp_enum_data.index);
 					hv_msg->error = HV_S_CONT;
 					}
 			goto kvp_done;
